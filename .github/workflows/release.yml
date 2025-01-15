@@ -44,7 +44,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           tag_name: ${{ env.TAG_NAME }}
-          files: Surfing_v*.zip
+          files: Clash_v*.zip
           generate_release_notes: false
           body_path: release_notes.txt
         env:

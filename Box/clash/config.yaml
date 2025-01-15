@@ -1,0 +1,403 @@
+# 订阅地址
+p: &p
+  {type: http, url: "引号内填写你的订阅地址", interval: 21600, health-check: {enable: true, url: https://www.google.com/generate_204, interval: 300}}
+
+
+# by LIghtJUNction
+# 第一部分 快速配置
+
+# 配置组一             端口类
+mixed-port: 7890
+redir-port: 7891
+tproxy-port: 1536
+
+# 外部控制 (API)
+external-controller: 127.0.0.1:9090 # 外部控制器，可以使用 RESTful API 来控制你的 Clash 内核；API 监听地址，你可以将 127.0.0.1 修改为 0.0.0.0 来监听所有 IP；访问地址：http://127.0.0.1:9090
+secret: "" # API 的访问密钥 默认不添加
+#面板默认Yacd 可选Meta 清除浏览器缓存即可重新加载
+external-ui: /data/adb/Box/panel/Yacd/ #/Meta #/Yacd
+# external-ui-name: "lightjunction" # 自定义外部用户界面名字
+
+
+
+
+# 配置组二            布尔类
+ipv6: false
+allow-lan: true
+tcp-concurrent: true
+unified-delay: true
+geodata-mode: true # 是否启用 geodata 规则集和geodata都启用
+geo-auto-update: true # 是否自动更新 geodata
+geo-update-interval: 24 # 更新间隔，单位：小时
+keep-alive-interval: 1800  # 减少移动端设备耗电
+
+# 配置组三           选择类
+mode: rule  # rule（默认） global（需要在GLOBAL策略组选择）direct 
+log-level: silent
+global-client-fingerprint: random # 随机指纹 （全局客户端指纹）
+geodata-loader: memconservative # memconservative（小内存） standard
+find-process-mode: strict
+
+
+      
+hosts:
+  time.facebook.com: 17.253.84.125
+  time.android.com: 17.253.84.125
+  '*.mihomo.dev': 127.0.0.1
+  '.dev': 127.0.0.1
+  'alpha.mihomo.dev': '::1'
+  test.com: [1.1.1.1, 2.2.2.2]
+  home.lan: lan # lan 为特别字段，将加入本地所有网卡的地址
+  # 只允许配置一个别名
+
+
+# 配置组-高级
+
+dns:   # DNS泄露问题 
+  cache-algorithm: arc # ARC（Adaptive Replacement Cache）缓存算法
+  enable: true  # 使用clashDNS
+  listen: 0.0.0.0:1053
+  use-hosts: true
+  ipv6: true
+  ipv6-timeout: 300  # 单位：ms，内部双栈并发时，向上游查询 AAAA 时，等待 AAAA 的时间，默认 100ms
+  prefer-h3: true # 是否开启 DOH 的 http/3。 
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  fake-ip-filter:
+    - '*'
+    - '+.lan'
+    - '+.local'
+    - '+.leigod.com'
+    - '+.vivox.com'
+    - '+.stun.+'
+    - '.n.n.srv.nintendo.net'
+    - '+.stun.playstation.net'
+    - 'xbox.*.*.microsoft.com'
+    - '*.*.xboxlive.com'
+    - 'lens.l.google.com'
+    - '*.mcdn.bilivideo.cn'
+    - "connect.rom.miui.com"
+    - 'localhost.ptlogin2.qq.com'
+    - 'weatherapi.market.xiaomi.com'
+    - WORKGROUP
+    
+
+# 只能使用纯 IP 地址，可使用加密 DNS 想要DNS不泄露就用加密DNS
+  nameserver:    # 主要 国内代理
+    - https://1.1.1.1/dns-query🚀 节点选择
+    - https://1.0.0.1/dns-query🚀 节点选择
+    - tls://223.5.5.5:853#🚀 节点选择 # DNS over TLS
+    - https://doh.pub/dns-query#🚀 节点选择 # DNS over HTTPS
+    - https://mozilla.cloudflare-dns.com/dns-query#🚀 节点选择&h3=true # 指定策略组和使用 HTTP/3
+    - dhcp://en0🚀 节点选择  # dns from dhcp #测试
+
+  # 只能使用纯 IP 地址，可使用加密 DNS
+  default-nameserver: 
+    - tls://1.12.12.12:853
+    - tls://223.5.5.5:853
+    - https://223.5.5.5/dns-query 
+    - tcp://119.29.29.29
+    - tcp://223.6.6.6 
+    - system 
+    
+  nameserver-policy:
+    "geosite:cn,private":
+      - https://223.5.5.5/dns-query
+      - https://doh.pub/dns-query
+      - https://doh.360.cn/dns-query
+      - tls://223.5.5.5
+      - tls://dot.pub
+    "rule-set:direct,private,apple,icloud":
+      - https://223.5.5.5/dns-query
+      - https://doh.pub/dns-query
+      - https://doh.360.cn/dns-query
+      - tls://223.5.5.5
+      - tls://dot.pub         
+
+  proxy-server-nameserver:
+  #  - https://223.5.5.5/dns-query
+    - https://doh.pub/dns-query
+    - https://doh.360.cn/dns-query
+    - tls://223.5.5.5
+    - tls://dot.pub     
+    
+  fallback:
+    - quic://a.passcloud.xyz:784🚀 节点选择 # quic是新兴的，比tls快一倍
+    - tls://8.8.4.4:853🚀 节点选择
+    - tcp://1.1.1.1🚀 节点选择
+    - https://1.1.1.1/dns-query🚀 节点选择&h3=true
+    - https://1.0.0.1/dns-query🚀 节点选择
+    - tls://1dot1dot1dot1.cloudflare-dns.com🚀 节点选择 
+
+  fallback-filter:    # 国外网站使用此解析
+    geoip: true # 配置是否使用 geoip
+    geoip-code: CN
+    geosite:      # 根据实际情况决定
+      - cn
+      - games-cn
+      - apple-cn
+      - microsoft-cn 
+    ipcidr:
+      - 240.0.0.0/4
+    domain:
+      - '+.google.com'
+      - '+.facebook.com'
+      - '+.youtube.com'
+      - '+.googleapis.+'     
+# DNS配置完成
+
+
+# 模式配置
+tun:    # tun模式
+  enable: true
+  device: utun # gvisor/mixed
+  mtu: 9000 # 最大传输单元
+  stack: system # gvisor / lwip / system
+  dns-hijack: # dns 劫持，将匹配到的连接导入内部 dns 模块，不书写协议则为 udp://
+    - udp://any:53  # 需要劫持的 DNS
+    - tcp://any:53
+  auto-route: true # 配置路由表
+  auto-detect-interface: true  # 自动识别出口网卡
+  endpoint-independent-nat: false # 启用独立于端点的 NAT,性能可能会略有下降,所以建议在需要的时候开启
+  inet4-route-exclude-address: #启用 auto-route 时排除自定义网段
+    - 192.168.0.0/16
+  inet6-route-exclude-address: #启用 auto-route 时排除自定义网段
+    - fc00::/7
+  inet4-route-address: # 启用 auto-route 时使用自定义路由而不是默认路由
+    - 0.0.0.0/1
+    - 128.0.0.0/1
+  inet6-route-address: # 启用 auto-route 时使用自定义路由而不是默认路由
+    - "::/1"
+    - "8000::/1"
+   # strict-route: true # 将所有连接路由到 tun 来防止泄漏，但你的设备将无法其他设备被访问 热点将无法共享网络
+  include_android_user:
+    - 0
+    # 多开用户
+   #  include_package:
+   #    - com.android.chrome
+  # exclude_package:
+    # - com.tencent.mm #  没必要开
+
+
+sniffer:      # mihomo的域名嗅探功能 如果不使用Clash内置的DNS解析服务，就无法准确还原域名，进行域名分流             
+  enable: true                    
+  force-dns-mapping: true
+  parse-pure-ip: true          
+  override-destination: true      
+  sniff:   # TLS 和 QUIC 默认如果不配置 ports 默认嗅探 443
+    TLS:
+      ports: [443, 8443]
+    QUIC:
+      ports: [443, 8443]
+    HTTP: # 需要嗅探的端口, 默认嗅探 80
+      ports: [80, 8080-8880]
+      override-destination: true # 可覆盖 sniffer.override-destination
+  force-domain:
+    - google.com
+    - +.v2ex.com
+  # # 白名单,跳过嗅探结果
+  skip-domain:
+    - Mijia Cloud
+    - +.apple.com
+  sniffing:
+    - tls
+    - http
+  port-whitelist:
+    - "80"
+    - "443"
+
+profile:
+  store-selected: true
+  # 储存 API 对策略组的选择，以供下次启动时使用
+  store-fake-ip: true
+  # 储存 fakeip 映射表，域名再次发生连接时，使用原有映射地址
+
+
+# https://github.com/Loyalsoldier/v2ray-rules-dat 的复刻 https://github.com/DustinWin/ruleset_geodata 
+geox-url:
+  geoip: "https://mirror.ghproxy.com/https://github.com/DustinWin/ruleset_geodata/releases/download/mihomo/geoip.dat"
+  geosite: "https://mirror.ghproxy.com/https://github.com/DustinWin/ruleset_geodata/releases/download/mihomo/geosite.dat"
+  
+
+# 第二部分 代理组配置  
+proxy-providers:
+  sub:
+    <<: *p
+    path: ./proxy_providers/sub.yaml
+proxies:
+  - {name: 🌎 全球直连, type: direct, udp: true}
+  - {name: DNS_Hijack, type: dns}
+proxy-groups:
+  - {name: 🚀 节点选择, type: select, proxies: [♻️ 延迟最低,🌎 全球直连], use: [All]}
+  - {name: ♻️ 延迟最低, type: url-test, url: https://www.google.com/generate_204, interval: 300, tolerance: 500, use: [All]}
+  - {name: 📲 电报信息, type: select, proxies: [🚀 节点选择, ♻️ 延迟最低, 🌎 全球直连], use: [All]}
+  - {name: 🎬 油管媒体, type: select, proxies: [🚀 节点选择, ♻️ 延迟最低, 🌎 全球直连], use: [All]}
+  - {name: 📸 TikTok, type: select, proxies: [🚀 节点选择, ♻️ 延迟最低, 🌎 全球直连], use: [All]}
+  - {name: 📹 奈飞媒体, type: select, proxies: [🚀 节点选择, ♻️ 延迟最低, 🌎 全球直连], use: [All]}
+  - {name: 📢 谷歌服务, type: select, proxies: [🌎 全球直连,  🚀 节点选择, ♻️ 延迟最低], use: [All]}
+  - {name: Ⓜ️ 微软服务, type: select, proxies: [🌎 全球直连,  🚀 节点选择, ♻️ 延迟最低], use: [All]}   
+  - {name: 🍎 苹果服务, type: select, proxies: [🌎 全球直连,  🚀 节点选择, ♻️ 延迟最低], use: [All]}
+  - {name: 📺 哔哩哔哩, type: select, proxies: [🌎 全球直连,  🚀 节点选择, ♻️ 延迟最低], use: [All]}
+  - {name: 🎹 网易音乐, type: select, proxies: [🌎 全球直连,  🚀 节点选择, ♻️ 延迟最低], use: [All]}
+  - {name: 🇨🇳 直连域名, type: select, proxies: [🌎 全球直连,  🚀 节点选择, ♻️ 延迟最低], use: [All]}
+  - {name: 🇨🇳 直连 IP, type: select, proxies: [🌎 全球直连,  🚀 节点选择, ♻️ 延迟最低], use: [All]}
+  - {name: 🧱 代理域名, type: select, proxies: [🚀 节点选择, ♻️ 延迟最低, 🌎 全球直连], use: [All]}
+  - {name: 🛑 广告拦截, type: select, proxies: [REJECT, 🌎 全球直连]}
+  - {name: 🐋 漏网之鱼, type: select, proxies: [ 🚀 节点选择, ♻️ 延迟最低, 🌎 全球直连]}
+
+  #############################################################################################################################
+  
+  
+
+# 第三部分 规则配置  
+# 规则提供者在下
+rule-providers: # https://github.com/Loyalsoldier/clash-rules 项目地址    另外一个规则库https://rules.xkww3n.cyou/   将在以后添加
+  telegramip:
+    type: http
+    behavior: ipcidr
+    format: mrs
+    path: ./ruleset/telegramip.mrs
+    url: "https://github.com/DustinWin/ruleset_geodata/releases/download/mihomo-ruleset/telegramip.mrs"
+    interval: 86400
+
+  youtube:
+    type: http
+    behavior: domain
+    format: mrs
+    path: ./ruleset/youtube.mrs
+    url: "https://github.com/DustinWin/ruleset_geodata/releases/download/mihomo-ruleset/youtube.mrs"
+    interval: 86400
+
+  tiktok:
+    type: http
+    behavior: domain
+    format: mrs
+    path: ./ruleset/tiktok.mrs
+    url: "https://github.com/DustinWin/ruleset_geodata/releases/download/mihomo-ruleset/tiktok.mrs"
+    interval: 86400
+
+  netflix:
+    type: http
+    behavior: domain
+    format: mrs
+    path: ./ruleset/netflix.mrs
+    url: "https://github.com/DustinWin/ruleset_geodata/releases/download/mihomo-ruleset/netflix.mrs"
+    interval: 86400
+
+  netflixip:
+    type: http
+    behavior: ipcidr
+    format: mrs
+    path: ./ruleset/netflixip.mrs
+    url: "https://github.com/DustinWin/ruleset_geodata/releases/download/mihomo-ruleset/netflixip.mrs"
+    interval: 86400
+
+  google-cn:
+    type: http
+    behavior: domain
+    format: mrs
+    path: ./ruleset/google-cn.mrs
+    url: "https://github.com/DustinWin/ruleset_geodata/releases/download/mihomo-ruleset/google-cn.mrs"
+    interval: 86400
+
+  bilibili:
+    type: http
+    behavior: domain
+    format: mrs
+    path: ./ruleset/bilibili.mrs
+    url: "https://github.com/DustinWin/ruleset_geodata/releases/download/mihomo-ruleset/bilibili.mrs"
+    interval: 86400
+
+  microsoft-cn:
+    type: http
+    behavior: domain
+    format: mrs
+    path: ./ruleset/microsoft-cn.mrs
+    url: "https://github.com/DustinWin/ruleset_geodata/releases/download/mihomo-ruleset/microsoft-cn.mrs"
+    interval: 86400
+
+  apple-cn:
+    type: http
+    behavior: domain
+    format: mrs
+    path: ./ruleset/apple-cn.mrs
+    url: "https://github.com/DustinWin/ruleset_geodata/releases/download/mihomo-ruleset/apple-cn.mrs"
+    interval: 86400
+
+  cn:
+    type: http
+    behavior: domain
+    format: mrs
+    path: ./ruleset/cn.mrs
+    url: "https://github.com/DustinWin/ruleset_geodata/releases/download/mihomo-ruleset/cn.mrs"
+    interval: 86400
+
+  cnip:
+    type: http
+    behavior: ipcidr
+    format: mrs
+    path: ./ruleset/cnip.mrs
+    url: "https://github.com/DustinWin/ruleset_geodata/releases/download/mihomo-ruleset/cnip.mrs"
+    interval: 86400
+
+  proxy:
+    type: http
+    behavior: domain
+    format: mrs
+    path: ./ruleset/proxy.mrs
+    url: "https://github.com/DustinWin/ruleset_geodata/releases/download/mihomo-ruleset/proxy.mrs"
+    interval: 86400
+
+  ads:
+    type: http
+    behavior: domain
+    format: mrs
+    path: ./ruleset/ads.mrs
+    url: "https://github.com/DustinWin/ruleset_geodata/releases/download/mihomo-ruleset/ads.mrs"
+    interval: 86400
+
+
+rules:
+  # 基本规则
+  - GEOSITE,private,DIRECT   # 主流 Clash dashboard 在线面板域名
+  ## fix dnsleak
+  - IP-CIDR,127.0.0.1/32,REJECT,no-resolve
+  - IP-CIDR,198.18.0.1/16,REJECT,no-resolve
+  - IP-CIDR,28.0.0.1/8,REJECT,no-resolve
+  - IP-CIDR6,::1/128,REJECT,no-resolve  
+  ## direct FCM
+  - AND,((NETWORK,TCP),(DST-PORT,5228-5230)),DIRECT
+  - AND,((NETWORK,TCP),(DST-PORT,5228-5230),(OR,((DOMAIN-KEYWORD,google)))),DIRECT
+  ## direct ntp
+  - AND,((NETWORK,UDP),(DST-PORT,123)),DIRECT
+  - DST-PORT,123/136/137-139,DIRECT,udp
+
+  - DST-PORT,53,DNS_Hijack
+  - AND,((PROCESS-NAME,mihomo),(NOT,((IN-TYPE,inner)))),REJECT
+  - AND,((PROCESS-NAME,clash),(NOT,((IN-TYPE,inner)))),REJECT
+
+  - DOMAIN-SUFFIX,o33249.ingest.sentry.io,REJECT  # OPENAI 跟踪域名 reject
+  - DOMAIN-SUFFIX,openaicom.imgix.net,REJECT  # OPENAI 跟踪域名 reject
+
+
+  # 自定义规则 高优先度
+  # geosite 包含：fakeip-filter/private/ads/microsoft-cn/apple-cn/google-cn/games-cn/netflix/disney/max/primevideo/appletv/youtube/tiktok/bilibili/ai/networktest/proxy/cn
+  - RULE-SET,ads,🛑 广告拦截
+  - PROCESS-NAME,com.netease.cloudmusic,🎹 网易音乐
+
+  - RULE-SET,netflix,📹 奈飞媒体
+  - RULE-SET,microsoft-cn,Ⓜ️ 微软服务
+  - RULE-SET,apple-cn,🍎 苹果服务 
+  - RULE-SET,google-cn,📢 谷歌服务
+  - RULE-SET,youtube,🎬 油管媒体
+  - RULE-SET,tiktok,📸 TikTok
+  - RULE-SET,bilibili,📺 哔哩哔哩
+
+  - RULE-SET,proxy,🧱 代理域名
+  - RULE-SET,cn,🇨🇳 直连域名
+  - RULE-SET,netflixip,📹 奈飞媒体,no-resolve
+  - RULE-SET,telegramip,📲 电报信息,no-resolve
+  - RULE-SET,cnip,🇨🇳 直连 IP
+
+  # 低优先度 匹配·漏网之鱼               
+  - MATCH,🐋 漏网之鱼 # 收尾

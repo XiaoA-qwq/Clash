@@ -3,12 +3,12 @@
 SKIPUNZIP=1
 ASH_STANDALONE=1
 
-SURFING_PATH="/data/adb/modules/Surfing/"
-SCRIPTS_PATH="/data/adb/box_bll/scripts/"
+SURFING_PATH="/data/adb/modules/Clash/"
+SCRIPTS_PATH="/data/adb/Box/scripts/"
 NET_PATH="/data/misc/net"
 CTR_PATH="/data/misc/net/rt_tables"
-CONFIG_FILE="/data/adb/box_bll/clash/config.yaml"
-BACKUP_FILE="/data/adb/box_bll/clash/subscribe_urls_backup.txt"
+CONFIG_FILE="/data/adb/Box/clash/config.yaml"
+BACKUP_FILE="/data/adb/Box/clash/subscribe_urls_backup.txt"
 
 if [ "$BOOTMODE" != true ]; then
   abort "Error: 请在 Magisk Manager / KernelSU Manager / APatch 中安装"
@@ -53,68 +53,68 @@ restore_subscribe_urls() {
 }
 
 unzip -qo "${ZIPFILE}" -x 'META-INF/*' -d "$MODPATH"
-if [ -d /data/adb/box_bll ]; then
-  if [ -d /data/adb/box_bll/clash ]; then
+if [ -d /data/adb/Box ]; then
+  if [ -d /data/adb/Box/clash ]; then
     extract_subscribe_urls
-    cp /data/adb/box_bll/clash/config.yaml /data/adb/box_bll/clash/config.yaml.bak
+    cp /data/adb/Box/clash/config.yaml /data/adb/Box/clash/config.yaml.bak
   fi
-  if [ -d /data/adb/box_bll/scripts ]; then
-    cp /data/adb/box_bll/scripts/box.config /data/adb/box_bll/scripts/box.config.bak
+  if [ -d /data/adb/Box/scripts ]; then
+    cp /data/adb/Box/scripts/box.config /data/adb/Box/scripts/box.config.bak
   fi
   ui_print "- 配置文件 config.yaml 已备份 bak"
   ui_print "- 用户配置 box.config 已备份 bak"
 
-  rm -f "/data/adb/box_bll/clash/Gui Yacd: 获取面板.sh"
-  rm -f "/data/adb/box_bll/clash/Gui Meta: 获取面板.sh"
-  rm -f "/data/adb/box_bll/clash/Telegram chat.sh"
-  rm -f "/data/adb/box_bll/clash/country.mmdb"
-  rm -f "/data/adb/box_bll/clash/UpdateGeo.sh"
-  rm -f "/data/adb/box_bll/clash/ASN.mmdb"
-  rm -f "/data/adb/box_bll/clash/Update: 数据库.sh"
-  rm -f "/data/adb/box_bll/clash/Telegram: 聊天组.sh"
-  rm -f "/data/adb/box_bll/clash/Gui Meta: 在线面板.sh"
-  rm -f "/data/adb/box_bll/clash/Gui Yacd: 在线面板.sh"
-  rm -rf /data/adb/box_bll/clash/ui
-  rm -rf /data/adb/box_bll/clash/dashboard
-  cp -f "$MODPATH/box_bll/clash/config.yaml" /data/adb/box_bll/clash/
-  cp -f "$MODPATH/box_bll/clash/enhanced_config.yaml" /data/adb/box_bll/clash/
-  cp -f "$MODPATH/box_bll/clash/Toolbox.sh"
-  cp -f "$MODPATH/box_bll/scripts/"* /data/adb/box_bll/scripts/
-  rm -rf "$MODPATH/box_bll"
+  rm -f "/data/adb/Box/clash/Gui Yacd: 获取面板.sh"
+  rm -f "/data/adb/Box/clash/Gui Meta: 获取面板.sh"
+  rm -f "/data/adb/Box/clash/Telegram chat.sh"
+  rm -f "/data/adb/Box/clash/country.mmdb"
+  rm -f "/data/adb/Box/clash/UpdateGeo.sh"
+  rm -f "/data/adb/Box/clash/ASN.mmdb"
+  rm -f "/data/adb/Box/clash/Update: 数据库.sh"
+  rm -f "/data/adb/Box/clash/Telegram: 聊天组.sh"
+  rm -f "/data/adb/Box/clash/Gui Meta: 在线面板.sh"
+  rm -f "/data/adb/Box/clash/Gui Yacd: 在线面板.sh"
+  rm -rf /data/adb/Box/clash/ui
+  rm -rf /data/adb/Box/clash/dashboard
+  cp -f "$MODPATH/Box/clash/config.yaml" /data/adb/Box/clash/
+  cp -f "$MODPATH/Box/clash/enhanced_config.yaml" /data/adb/Box/clash/
+  cp -f "$MODPATH/Box/clash/Toolbox.sh"
+  cp -f "$MODPATH/Box/scripts/"* /data/adb/Box/scripts/
+  rm -rf "$MODPATH/Box"
   
   restore_subscribe_urls
   ui_print "- 更新无需重启设备..."
 else
-  mv "$MODPATH/box_bll" /data/adb/
+  mv "$MODPATH/Box" /data/adb/
   ui_print "- Installing..."
   ui_print "- ————————————————"
   ui_print "- 安装完成 工作目录"
-  ui_print "- data/adb/box_bll/"
+  ui_print "- data/adb/Box/"
   ui_print "- 安装无需重启设备..."
 fi
 
 if [ "$KSU" = true ]; then
-  sed -i 's/name=Surfingmagisk/name=SurfingKernelSU/g' "$MODPATH/module.prop"
+  sed -i 's/name=Clash/name=ClashKernelSU/g' "$MODPATH/module.prop"
 fi
 
 if [ "$APATCH" = true ]; then
-  sed -i 's/name=Surfingmagisk/name=SurfingAPatch/g' "$MODPATH/module.prop"
+  sed -i 's/name=Clash/name=ClashAPatch/g' "$MODPATH/module.prop"
 fi
 
 # 设置权限
-mkdir -p /data/adb/box_bll/bin/
-mkdir -p /data/adb/box_bll/run/
+mkdir -p /data/adb/Box/bin/
+mkdir -p /data/adb/Box/run/
 
 rm -f customize.sh
-mv -f "$MODPATH/Surfing_service.sh" "$service_dir/"
+mv -f "$MODPATH/Clash_service.sh" "$service_dir/"
 
 set_perm_recursive "$MODPATH" 0 0 0755 0644
-set_perm_recursive /data/adb/box_bll/ 0 3005 0755 0644
-set_perm_recursive /data/adb/box_bll/scripts/ 0 3005 0755 0700
-set_perm_recursive /data/adb/box_bll/bin/ 0 3005 0755 0700
-set_perm "$service_dir/Surfing_service.sh" 0 0 0700
+set_perm_recursive /data/adb/Box/ 0 3005 0755 0644
+set_perm_recursive /data/adb/Box/scripts/ 0 3005 0755 0700
+set_perm_recursive /data/adb/Box/bin/ 0 3005 0755 0700
+set_perm "$service_dir/Clash_service.sh" 0 0 0700
 
-chmod ugo+x /data/adb/box_bll/scripts/*
+chmod ugo+x /data/adb/Box/scripts/*
 
 # 启动监控服务
 for pid in $(pidof inotifyd); do
