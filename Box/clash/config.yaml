@@ -81,7 +81,7 @@ dns:   # DNS泄露问题
     - '*.mcdn.bilivideo.cn'
     - "connect.rom.miui.com"
     - 'localhost.ptlogin2.qq.com'
-    - 'weatherapi.market.xiaomi.com'
+    - "+.market.xiaomi.com"
     - WORKGROUP
     
 
