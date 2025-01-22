@@ -1,9 +1,12 @@
 # 订阅地址
-p: &p
-  {type: http, url: "引号内填写你的订阅地址", interval: 21600, health-check: {enable: true, url: https://www.google.com/generate_204, interval: 300}}
+
+proxy-providers:
+  "sub1":
+    {type: http, url: "引号内填写你的订阅地址", interval: 21600, path: ./provide/sub1.yml, health-check: {enable: true, url: https://www.google.com/generate_204, interval: 300}}
+  "sub2":
+    {type: http, url: "引号内填写你的订阅地址", interval: 21600, path: ./provide/sub2.yml, health-check: {enable: true, url: https://www.google.com/generate_204, interval: 300}}
 
 
-# by LIghtJUNction
 # 第一部分 快速配置
 
 # 配置组一             端口类
@@ -220,30 +223,28 @@ geox-url:
   
 
 # 第二部分 代理组配置  
-proxy-providers:
-  All:
-    <<: *p
-    path: ./proxy_providers/sub.yaml
+
 proxies:
   - {name: 🌎 全球直连, type: direct, udp: true}
   - {name: DNS_Hijack, type: dns}
 proxy-groups:
-  - {name: 🚀 节点选择, type: select, proxies: [♻️ 延迟最低,🌎 全球直连], use: [All]}
-  - {name: ♻️ 延迟最低, type: url-test, url: https://www.google.com/generate_204, interval: 300, tolerance: 500, use: [All]}
-  - {name: 📲 电报信息, type: select, proxies: [🚀 节点选择, ♻️ 延迟最低, 🌎 全球直连], use: [All]}
-  - {name: 🎬 油管媒体, type: select, proxies: [🚀 节点选择, ♻️ 延迟最低, 🌎 全球直连], use: [All]}
-  - {name: 📸 TikTok, type: select, proxies: [🚀 节点选择, ♻️ 延迟最低, 🌎 全球直连], use: [All]}
-  - {name: 📹 奈飞媒体, type: select, proxies: [🚀 节点选择, ♻️ 延迟最低, 🌎 全球直连], use: [All]}
-  - {name: 📢 谷歌服务, type: select, proxies: [🌎 全球直连,  🚀 节点选择, ♻️ 延迟最低], use: [All]}
-  - {name: Ⓜ️ 微软服务, type: select, proxies: [🌎 全球直连,  🚀 节点选择, ♻️ 延迟最低], use: [All]}   
-  - {name: 🍎 苹果服务, type: select, proxies: [🌎 全球直连,  🚀 节点选择, ♻️ 延迟最低], use: [All]}
-  - {name: 📺 哔哩哔哩, type: select, proxies: [🌎 全球直连,  🚀 节点选择, ♻️ 延迟最低], use: [All]}
-  - {name: 🎹 网易音乐, type: select, proxies: [🌎 全球直连,  🚀 节点选择, ♻️ 延迟最低], use: [All]}
-  - {name: 🇨🇳 直连域名, type: select, proxies: [🌎 全球直连,  🚀 节点选择, ♻️ 延迟最低], use: [All]}
-  - {name: 🇨🇳 直连 IP, type: select, proxies: [🌎 全球直连,  🚀 节点选择, ♻️ 延迟最低], use: [All]}
-  - {name: 🧱 代理域名, type: select, proxies: [🚀 节点选择, ♻️ 延迟最低, 🌎 全球直连], use: [All]}
+  - {name: 🚀 节点选择, type: select, proxies: [♻️ 主要延迟最低, ♻️ 备用延迟最低,🌎 全球直连], use: [sub1,sub2]}
+  - {name: ♻️ 主要延迟最低, type: url-test, url: https://www.google.com/generate_204, interval: 300, tolerance: 300, use: [sub1,sub2]}
+  - {name: ♻️ 备用延迟最低, type: url-test, url: https://www.google.com/generate_204, interval: 300, tolerance: 300, use: [sub1,sub2]}
+  - {name: 📲 电报信息, type: select, proxies: [🚀 节点选择, ♻️ 主要延迟最低, ♻️ 备用延迟最低, 🌎 全球直连], use: [sub1,sub2]}
+  - {name: 🎬 油管媒体, type: select, proxies: [🚀 节点选择, ♻️ 主要延迟最低, ♻️ 备用延迟最低, 🌎 全球直连], use: [sub1,sub2]}
+  - {name: 📸 TikTok, type: select, proxies: [🚀 节点选择, ♻️ 主要延迟最低, ♻️ 备用延迟最低, 🌎 全球直连], use: [sub1,sub2]}
+  - {name: 📹 奈飞媒体, type: select, proxies: [🚀 节点选择, ♻️ 主要延迟最低, ♻️ 备用延迟最低, 🌎 全球直连], use: [sub1,sub2]}
+  - {name: 📢 谷歌服务, type: select, proxies: [🌎 全球直连,  🚀 节点选择, ♻️ 主要延迟最低, ♻️ 备用延迟最低], use: [sub1,sub2]}
+  - {name: Ⓜ️ 微软服务, type: select, proxies: [🌎 全球直连,  🚀 节点选择, ♻️ 主要延迟最低, ♻️ 备用延迟最低], use: [sub1,sub2]}   
+  - {name: 🍎 苹果服务, type: select, proxies: [🌎 全球直连,  🚀 节点选择, ♻️ 主要延迟最低, ♻️ 备用延迟最低], use: [sub1,sub2]}
+  - {name: 📺 哔哩哔哩, type: select, proxies: [🌎 全球直连,  🚀 节点选择, ♻️ 主要延迟最低, ♻️ 备用延迟最低], use: [sub1,sub2]}
+  - {name: 🎹 网易音乐, type: select, proxies: [🌎 全球直连,  🚀 节点选择, ♻️ 主要延迟最低, ♻️ 备用延迟最低], use: [sub1,sub2]}
+  - {name: 🇨🇳 直连域名, type: select, proxies: [🌎 全球直连,  🚀 节点选择, ♻️ 主要延迟最低, ♻️ 备用延迟最低], use: [sub1,sub2]}
+  - {name: 🇨🇳 直连 IP, type: select, proxies: [🌎 全球直连,  🚀 节点选择, ♻️ 主要延迟最低, ♻️ 备用延迟最低], use: [sub1,sub2]}
+  - {name: 🧱 代理域名, type: select, proxies: [🚀 节点选择, ♻️ 主要延迟最低, ♻️ 备用延迟最低, 🌎 全球直连], use: [sub1,sub2]}
   - {name: 🛑 广告拦截, type: select, proxies: [REJECT, 🌎 全球直连]}
-  - {name: 🐋 漏网之鱼, type: select, proxies: [ 🚀 节点选择, ♻️ 延迟最低, 🌎 全球直连]}
+  - {name: 🐋 漏网之鱼, type: select, proxies: [ 🚀 节点选择, ♻️ 主要延迟最低, ♻️ 备用延迟最低, 🌎 全球直连]}
 
   #############################################################################################################################
   
@@ -252,6 +253,15 @@ proxy-groups:
 # 第三部分 规则配置  
 # 规则提供者在下
 rule-providers: # https://github.com/Loyalsoldier/clash-rules 项目地址    另外一个规则库https://rules.xkww3n.cyou/   将在以后添加
+
+  fakeip-filter:
+    type: http
+    behavior: domain
+    format: mrs
+    path: ./rules/fakeip-filter.mrs
+    url: "https://github.com/DustinWin/ruleset_geodata/releases/download/mihomo-ruleset/fakeip-filter.mrs"
+    interval: 86400
+
   telegramip:
     type: http
     behavior: ipcidr
@@ -371,6 +381,9 @@ rules:
   ## direct ntp
   - AND,((NETWORK,UDP),(DST-PORT,123)),DIRECT
   - DST-PORT,123/136/137-139,DIRECT,udp
+  ## block udp/quic YouTube
+  - AND,((NETWORK,udp),(OR,((DST-PORT,443/80),(GEOSITE,youtube)))),REJECT
+  - AND,((NETWORK,udp),(GEOSITE,youtube)),REJECT
 
   - DST-PORT,53,DNS_Hijack
   - AND,((PROCESS-NAME,mihomo),(NOT,((IN-TYPE,inner)))),REJECT

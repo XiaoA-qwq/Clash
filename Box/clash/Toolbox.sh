@@ -40,8 +40,8 @@ GEOIP_PATH="/data/adb/Box/clash/GeoIP.dat"
 GEOSITE_PATH="/data/adb/Box/clash/GeoSite.dat"
 RULES_PATH="/data/adb/Box/clash/rule/"
 GIT_URL="https://api.github.com/repos/XiaoA-qwq/Clash/releases/latest"
-RULES_URL_PREFIX="https://raw.githubusercontent.com/XiaoA-qwq/rules/main/Home/"
-RULES=("YouTube.yaml" "TikTok.yaml" "Telegram.yaml" "OpenAI.yaml" "Netflix.yaml" "Microsoft.yaml" "Google.yaml" "Facebook.yaml" "Discord.yaml" "Apple.yaml")
+RULES_URL_PREFIX="https://github.com/DustinWin/ruleset_geodata/releases/download/mihomo-ruleset/"
+RULES=("telegramip.yaml" "youtube.yaml" "tiktok.yaml" "netflix.yaml" "netflixip.yaml" "google-cn.yaml" "bilibili.yaml" "microsoft-cn.yaml" "apple-cn.yaml" "cn.yaml" "cnip.yaml" "proxy.yaml" "ads.yaml")
 
 CURRENT_VERSION="v10.9"
 TOOLBOX_URL="https://raw.githubusercontent.com/XiaoA-qwq/Clash/main/Box/clash/Toolbox.sh"
