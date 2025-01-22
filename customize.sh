@@ -47,8 +47,8 @@ restore_subscribe_urls() {
     URL2=$(sed -n '2p' "$BACKUP_FILE" | tr -d '\n' | tr -d '\r')
     ESCAPED_URL1=$(printf '%s\n' "$URL1" | sed 's/[&/]/\\&/g')
     ESCAPED_URL2=$(printf '%s\n' "$URL2" | sed 's/[&/]/\\&/g')
-    sed -i -E "/"sub1"/{N;s|url: \".*\"|url: \"$ESCAPED_URL1\"|}" "$CONFIG_FILE"
-    sed -i -E "/"sub2"/{N;s|url: \".*\"|url: \"$ESCAPED_URL2\"|}" "$CONFIG_FILE"
+    sed -i -E "/"主要订阅"/{N;s|url: \".*\"|url: \"$ESCAPED_URL1\"|}" "$CONFIG_FILE"
+    sed -i -E "/"备用订阅"/{N;s|url: \".*\"|url: \"$ESCAPED_URL2\"|}" "$CONFIG_FILE"
     echo "- 订阅地址已恢复至新文件中！"
   else
     echo "- 备份文件不存在或为空，无法恢复订阅地址。"

@@ -1,10 +1,10 @@
 # 订阅地址
 
 proxy-providers:
-  "sub1":
-    {type: http, url: "引号内填写你的订阅地址", interval: 21600, path: ./provide/sub1.yml, health-check: {enable: true, url: https://www.google.com/generate_204, interval: 300}}
-  "sub2":
-    {type: http, url: "引号内填写你的订阅地址", interval: 21600, path: ./provide/sub2.yml, health-check: {enable: true, url: https://www.google.com/generate_204, interval: 300}}
+  "主要订阅":
+    {type: http, url: "引号内填写你的订阅地址", interval: 21600, path: ./provide/主要订阅.yml, health-check: {enable: true, url: https://www.google.com/generate_204, interval: 300}}
+  "备用订阅":
+    {type: http, url: "引号内填写你的订阅地址", interval: 21600, path: ./provide/备用订阅.yml, health-check: {enable: true, url: https://www.google.com/generate_204, interval: 300}}
 
 
 # 第一部分 快速配置
@@ -228,21 +228,21 @@ proxies:
   - {name: 🌎 全球直连, type: direct, udp: true}
   - {name: DNS_Hijack, type: dns}
 proxy-groups:
-  - {name: 🚀 节点选择, type: select, proxies: [♻️ 主要延迟最低, ♻️ 备用延迟最低,🌎 全球直连], use: [sub1,sub2]}
-  - {name: ♻️ 主要延迟最低, type: url-test, url: https://www.google.com/generate_204, interval: 300, tolerance: 300, use: [sub1,sub2]}
-  - {name: ♻️ 备用延迟最低, type: url-test, url: https://www.google.com/generate_204, interval: 300, tolerance: 300, use: [sub1,sub2]}
-  - {name: 📲 电报信息, type: select, proxies: [🚀 节点选择, ♻️ 主要延迟最低, ♻️ 备用延迟最低, 🌎 全球直连], use: [sub1,sub2]}
-  - {name: 🎬 油管媒体, type: select, proxies: [🚀 节点选择, ♻️ 主要延迟最低, ♻️ 备用延迟最低, 🌎 全球直连], use: [sub1,sub2]}
-  - {name: 📸 TikTok, type: select, proxies: [🚀 节点选择, ♻️ 主要延迟最低, ♻️ 备用延迟最低, 🌎 全球直连], use: [sub1,sub2]}
-  - {name: 📹 奈飞媒体, type: select, proxies: [🚀 节点选择, ♻️ 主要延迟最低, ♻️ 备用延迟最低, 🌎 全球直连], use: [sub1,sub2]}
-  - {name: 📢 谷歌服务, type: select, proxies: [🌎 全球直连,  🚀 节点选择, ♻️ 主要延迟最低, ♻️ 备用延迟最低], use: [sub1,sub2]}
-  - {name: Ⓜ️ 微软服务, type: select, proxies: [🌎 全球直连,  🚀 节点选择, ♻️ 主要延迟最低, ♻️ 备用延迟最低], use: [sub1,sub2]}   
-  - {name: 🍎 苹果服务, type: select, proxies: [🌎 全球直连,  🚀 节点选择, ♻️ 主要延迟最低, ♻️ 备用延迟最低], use: [sub1,sub2]}
-  - {name: 📺 哔哩哔哩, type: select, proxies: [🌎 全球直连,  🚀 节点选择, ♻️ 主要延迟最低, ♻️ 备用延迟最低], use: [sub1,sub2]}
-  - {name: 🎹 网易音乐, type: select, proxies: [🌎 全球直连,  🚀 节点选择, ♻️ 主要延迟最低, ♻️ 备用延迟最低], use: [sub1,sub2]}
-  - {name: 🇨🇳 直连域名, type: select, proxies: [🌎 全球直连,  🚀 节点选择, ♻️ 主要延迟最低, ♻️ 备用延迟最低], use: [sub1,sub2]}
-  - {name: 🇨🇳 直连 IP, type: select, proxies: [🌎 全球直连,  🚀 节点选择, ♻️ 主要延迟最低, ♻️ 备用延迟最低], use: [sub1,sub2]}
-  - {name: 🧱 代理域名, type: select, proxies: [🚀 节点选择, ♻️ 主要延迟最低, ♻️ 备用延迟最低, 🌎 全球直连], use: [sub1,sub2]}
+  - {name: 🚀 节点选择, type: select, proxies: [♻️ 主要延迟最低, ♻️ 备用延迟最低,🌎 全球直连], use: [主要订阅,备用订阅]}
+  - {name: ♻️ 主要延迟最低, type: url-test, url: https://www.google.com/generate_204, interval: 300, tolerance: 300, use: [主要订阅]}
+  - {name: ♻️ 备用延迟最低, type: url-test, url: https://www.google.com/generate_204, interval: 300, tolerance: 300, use: [备用订阅]}
+  - {name: 📲 电报信息, type: select, proxies: [🚀 节点选择, ♻️ 主要延迟最低, ♻️ 备用延迟最低, 🌎 全球直连], use: [主要订阅,备用订阅]}
+  - {name: 🎬 油管媒体, type: select, proxies: [🚀 节点选择, ♻️ 主要延迟最低, ♻️ 备用延迟最低, 🌎 全球直连], use: [主要订阅,备用订阅]}
+  - {name: 📸 TikTok, type: select, proxies: [🚀 节点选择, ♻️ 主要延迟最低, ♻️ 备用延迟最低, 🌎 全球直连], use: [主要订阅,备用订阅]}
+  - {name: 📹 奈飞媒体, type: select, proxies: [🚀 节点选择, ♻️ 主要延迟最低, ♻️ 备用延迟最低, 🌎 全球直连], use: [主要订阅,备用订阅]}
+  - {name: 📢 谷歌服务, type: select, proxies: [🌎 全球直连,  🚀 节点选择, ♻️ 主要延迟最低, ♻️ 备用延迟最低], use: [主要订阅,备用订阅]}
+  - {name: Ⓜ️ 微软服务, type: select, proxies: [🌎 全球直连,  🚀 节点选择, ♻️ 主要延迟最低, ♻️ 备用延迟最低], use: [主要订阅,备用订阅]}   
+  - {name: 🍎 苹果服务, type: select, proxies: [🌎 全球直连,  🚀 节点选择, ♻️ 主要延迟最低, ♻️ 备用延迟最低], use: [主要订阅,备用订阅]}
+  - {name: 📺 哔哩哔哩, type: select, proxies: [🌎 全球直连,  🚀 节点选择, ♻️ 主要延迟最低, ♻️ 备用延迟最低], use: [主要订阅,备用订阅]}
+  - {name: 🎹 网易音乐, type: select, proxies: [🌎 全球直连,  🚀 节点选择, ♻️ 主要延迟最低, ♻️ 备用延迟最低], use: [主要订阅,备用订阅]}
+  - {name: 🇨🇳 直连域名, type: select, proxies: [🌎 全球直连,  🚀 节点选择, ♻️ 主要延迟最低, ♻️ 备用延迟最低], use: [主要订阅,备用订阅]}
+  - {name: 🇨🇳 直连 IP, type: select, proxies: [🌎 全球直连,  🚀 节点选择, ♻️ 主要延迟最低, ♻️ 备用延迟最低], use: [主要订阅,备用订阅]}
+  - {name: 🧱 代理域名, type: select, proxies: [🚀 节点选择, ♻️ 主要延迟最低, ♻️ 备用延迟最低, 🌎 全球直连], use: [主要订阅,备用订阅]}
   - {name: 🛑 广告拦截, type: select, proxies: [REJECT, 🌎 全球直连]}
   - {name: 🐋 漏网之鱼, type: select, proxies: [ 🚀 节点选择, ♻️ 主要延迟最低, ♻️ 备用延迟最低, 🌎 全球直连]}
 
@@ -382,8 +382,8 @@ rules:
   - AND,((NETWORK,UDP),(DST-PORT,123)),DIRECT
   - DST-PORT,123/136/137-139,DIRECT,udp
   ## block udp/quic YouTube
-  - AND,((NETWORK,udp),(OR,((DST-PORT,443/80),(GEOSITE,youtube)))),REJECT
-  - AND,((NETWORK,udp),(GEOSITE,youtube)),REJECT
+  - AND,((NETWORK,udp),(OR,((DST-PORT,443/80),(RULE-SET,youtube)))),REJECT
+  - AND,((NETWORK,udp),(RULE-SET,youtube)),REJECT
 
   - DST-PORT,53,DNS_Hijack
   - AND,((PROCESS-NAME,mihomo),(NOT,((IN-TYPE,inner)))),REJECT
