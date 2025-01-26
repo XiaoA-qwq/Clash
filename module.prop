@@ -1,7 +1,7 @@
 id=Clash
 name=Clash
-version=v1.0.1
-versionCode=25012201
+version=v1.0.2
+versionCode=25012601
 author=XiaoA
 description=此项目适用于 Magisk、Kernelsu和APatch 模组端 Clash. 支持 REDIRECT (TCP only), TPROXY (TCP + UDP) transparent proxy, TUN (TCP + UDP), and a mixed mode proxy with REDIRECT (TCP) + TUN (UDP).实现安卓软路由
 updateJson=https://raw.githubusercontent.com/XiaoA-qwq/Clash/main/update.json

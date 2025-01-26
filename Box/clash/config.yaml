@@ -231,6 +231,7 @@ proxy-groups:
   - {name: 🚀 节点选择, type: select, proxies: [♻️ 主要延迟最低, ♻️ 备用延迟最低,🌎 全球直连], use: [主要订阅,备用订阅]}
   - {name: ♻️ 主要延迟最低, type: url-test, url: https://www.google.com/generate_204, interval: 300, tolerance: 300, use: [主要订阅]}
   - {name: ♻️ 备用延迟最低, type: url-test, url: https://www.google.com/generate_204, interval: 300, tolerance: 300, use: [备用订阅]}
+  - {name: 🎮 游戏服务, type: select, proxies: [🚀 节点选择, ♻️ 主要延迟最低, ♻️ 备用延迟最低, 🌎 全球直连], use: [主要订阅,备用订阅]}
   - {name: 📲 电报信息, type: select, proxies: [🚀 节点选择, ♻️ 主要延迟最低, ♻️ 备用延迟最低, 🌎 全球直连], use: [主要订阅,备用订阅]}
   - {name: 🎬 油管媒体, type: select, proxies: [🚀 节点选择, ♻️ 主要延迟最低, ♻️ 备用延迟最低, 🌎 全球直连], use: [主要订阅,备用订阅]}
   - {name: 📸 TikTok, type: select, proxies: [🚀 节点选择, ♻️ 主要延迟最低, ♻️ 备用延迟最低, 🌎 全球直连], use: [主要订阅,备用订阅]}
@@ -253,14 +254,6 @@ proxy-groups:
 # 第三部分 规则配置  
 # 规则提供者在下
 rule-providers: # https://github.com/Loyalsoldier/clash-rules 项目地址    另外一个规则库https://rules.xkww3n.cyou/   将在以后添加
-
-  fakeip-filter:
-    type: http
-    behavior: domain
-    format: mrs
-    path: ./rules/fakeip-filter.mrs
-    url: "https://github.com/DustinWin/ruleset_geodata/releases/download/mihomo-ruleset/fakeip-filter.mrs"
-    interval: 86400
 
   telegramip:
     type: http
@@ -405,12 +398,14 @@ rules:
   - RULE-SET,youtube,🎬 油管媒体
   - RULE-SET,tiktok,📸 TikTok
   - RULE-SET,bilibili,📺 哔哩哔哩
+  - GEOSITE,games-cn,🎮 游戏服务
 
   - RULE-SET,proxy,🧱 代理域名
   - RULE-SET,cn,🇨🇳 直连域名
   - RULE-SET,netflixip,📹 奈飞媒体,no-resolve
   - RULE-SET,telegramip,📲 电报信息,no-resolve
   - RULE-SET,cnip,🇨🇳 直连 IP
+  - GEOSITE,cn,🇨🇳 直连 IP
 
   # 低优先度 匹配·漏网之鱼               
   - MATCH,🐋 漏网之鱼 # 收尾
