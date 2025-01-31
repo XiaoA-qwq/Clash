@@ -2,9 +2,9 @@
 
 proxy-providers:
   "主要订阅":
-    {type: http, url: "引号内填写你的订阅地址", interval: 21600, path: ./provide/主要订阅.yml, health-check: {enable: true, url: https://www.google.com/generate_204, interval: 300}}
+    {type: http, url: "引号内填写你的订阅地址", interval: 21600, path: ./provide/主要订阅.yml, health-check: {enable: true, url: http://cp.cloudflare.com, interval: 300}}
   "备用订阅":
-    {type: http, url: "引号内填写你的订阅地址", interval: 21600, path: ./provide/备用订阅.yml, health-check: {enable: true, url: https://www.google.com/generate_204, interval: 300}}
+    {type: http, url: "引号内填写你的订阅地址", interval: 21600, path: ./provide/备用订阅.yml, health-check: {enable: true, url: http://cp.cloudflare.com, interval: 300}}
 
 
 # 第一部分 快速配置
@@ -36,8 +36,8 @@ keep-alive-interval: 1800  # 减少移动端设备耗电
 
 # 配置组三           选择类
 mode: rule  # rule（默认） global（需要在GLOBAL策略组选择）direct 
-log-level: silent
-global-client-fingerprint: random # 随机指纹 （全局客户端指纹）
+log-level: warning
+global-client-fingerprint: chrome #  （全局客户端指纹）
 geodata-loader: memconservative # memconservative（小内存） standard
 find-process-mode: strict
 
@@ -52,6 +52,14 @@ hosts:
   test.com: [1.1.1.1, 2.2.2.2]
   home.lan: lan # lan 为特别字段，将加入本地所有网卡的地址
   # 只允许配置一个别名
+  dns.alidns.com:
+    - 223.5.5.5
+    - 223.6.6.6
+    - 2400:3200:baba::1
+    - 2400:3200::1
+  doh.pub:
+    - 120.53.53.53
+    - 1.12.12.12
 
 
 # 配置组-高级
@@ -59,50 +67,146 @@ hosts:
 dns:   # DNS泄露问题 
   cache-algorithm: arc # ARC（Adaptive Replacement Cache）缓存算法
   enable: true  # 使用clashDNS
-  listen: 0.0.0.0:1053
-  use-hosts: true
   ipv6: true
   ipv6-timeout: 300  # 单位：ms，内部双栈并发时，向上游查询 AAAA 时，等待 AAAA 的时间，默认 100ms
   prefer-h3: true # 是否开启 DOH 的 http/3。 
   enhanced-mode: fake-ip
   fake-ip-range: 198.18.0.1/16
+  respect-rules: true
   fake-ip-filter:
-    - '*'
-    - '+.lan'
-    - '+.local'
-    - '+.leigod.com'
-    - '+.vivox.com'
-    - '+.stun.+'
-    - '.n.n.srv.nintendo.net'
-    - '+.stun.playstation.net'
-    - 'xbox.*.*.microsoft.com'
-    - '*.*.xboxlive.com'
+    - 'adguardteam.github.io'
+    - 'adrules.top'
+    - 'amobile.music.tc.qq.com'
+    - 'anti-ad.net'
+    - 'api-jooxtt.sanook.com'
+    - 'api.joox.com'
+    - 'aqqmusic.tc.qq.com'
+    - 'dl.stream.qqmusic.qq.com'
+    - 'ff.dorado.sdo.com'
+    - 'heartbeat.belkin.com'
+    - 'isure.stream.qqmusic.qq.com'
+    - 'joox.com'
     - 'lens.l.google.com'
-    - '*.mcdn.bilivideo.cn'
-    - "connect.rom.miui.com"
+    - 'local.adguard.org'
     - 'localhost.ptlogin2.qq.com'
-    - "+.market.xiaomi.com"
+    - 'localhost.sec.qq.com'
+    - 'mesu.apple.com'
+    - 'mobileoc.music.tc.qq.com'
+    - 'music.163.com'
+    - 'music.migu.cn'
+    - 'music.taihe.com'
+    - 'musicapi.taihe.com'
+    - 'na.b.g-tun.com'
+    - 'proxy.golang.org'
+    - 'ps.res.netease.com'
+    - 'shark007.net'
+    - 'songsearch.kugou.com'
+    - 'static.adtidy.org'
+    - 'streamoc.music.tc.qq.com'
+    - 'stun.l.google.com'
+    - 'swcdn.apple.com'
+    - 'swdist.apple.com'
+    - 'swdownload.apple.com'
+    - 'swquery.apple.com'
+    - 'swscan.apple.com'
+    - 'time-ios.apple.com'
+    - 'time1.cloud.tencent.com'
+    - 'trackercdn.kugou.com'
+    - 'xnotify.xboxlive.com'
+    - 'y.qq.com'
+    - '*.*.xboxlive.com'
+    - '+.stun.*.*'
+    - '+.stun.*.*.*'
+    - '+.stun.*.*.*.*'
+    - '+.stun.*.*.*.*.*'
+    - 'ntp.*.com'
+    - 'ntp1.*.com'
+    - 'ntp2.*.com'
+    - 'ntp3.*.com'
+    - 'ntp4.*.com'
+    - 'ntp5.*.com'
+    - 'ntp6.*.com'
+    - 'ntp7.*.com'
+    - 'stun.*.*'
+    - 'stun.*.*.*'
+    - 'time.*.apple.com'
+    - 'time.*.com'
+    - 'time.*.edu.cn'
+    - 'time.*.gov'
+    - 'time1.*.com'
+    - 'time2.*.com'
+    - 'time3.*.com'
+    - 'time4.*.com'
+    - 'time5.*.com'
+    - 'time6.*.com'
+    - 'time7.*.com'
+    - 'xbox.*.*.microsoft.com'
+    - 'xbox.*.microsoft.com'
+    - '+.126.net'
+    - '+.3gppnetwork.org'
+    - '+.battlenet.com.cn'
+    - '+.cdn.nintendo.net'
+    - '+.cmbchina.com'
+    - '+.cmbimg.com'
+    - '+.example'
+    - '+.ff14.sdo.com'
+    - '+.ffxiv.com'
+    - '+.finalfantasyxiv.com'
+    - '+.gcloudcs.com'
+    - '+.gcloudsdk.com'
+    - '+.home.arpa'
+    - '+.invalid'
+    - '+.kuwo.cn'
+    - '+.lan'
+    - '+.linksys.com'
+    - '+.linksyssmartwifi.com'
+    - '+.local'
+    - '+.localdomain'
+    - '+.localhost'
+    - '+.market.xiaomi.com'
+    - '+.mcdn.bilivideo.cn'
+    - '+.media.dssott.com'
+    - '+.msftconnecttest.com'
+    - '+.msftncsi.com'
+    - '+.music.163.com'
+    - '+.music.migu.cn'
+    - '+.n.n.srv.nintendo.net'
+    - '+.n0808.com'
+    - '+.nflxvideo.net'
+    - '+.ntp.org.cn'
+    - '+.oray.com'
+    - '+.orayimg.com'
+    - '+.pool.ntp.org'
+    - '+.qq.com'
+    - '+.router.asus.com'
+    - '+.sandai.net'
+    - '+.square-enix.com'
+    - '+.srv.nintendo.net'
+    - '+.steamcontent.com'
+    - '+.stun.playstation.net'
+    - '+.tencent.com'
+    - '+.test'
+    - '+.time.edu.cn'
+    - '+.uu.163.com'
+    - '+.wargaming.net'
+    - '+.wggames.cn'
+    - '+.wotgame.cn'
+    - '+.wowsgame.cn'
+    - '+.xiami.com'
+    - '+.y.qq.com'
     - WORKGROUP
-    
 
 # 只能使用纯 IP 地址，可使用加密 DNS 想要DNS不泄露就用加密DNS
   nameserver:    # 主要 国内代理
-    - https://1.1.1.1/dns-query#🚀 节点选择
-    - https://1.0.0.1/dns-query#🚀 节点选择
-    - tls://223.5.5.5:853#🚀 节点选择 # DNS over TLS
-    - https://doh.pub/dns-query##🚀 节点选择 # DNS over HTTPS
-    - https://mozilla.cloudflare-dns.com/dns-query##🚀 节点选择&h3=true # 指定策略组和使用 HTTP/3
-    - dhcp://en0#🚀 节点选择  # dns from dhcp #测试
+    - system
+    - https://doh.pub/dns-query # DNS over HTTPS
+    - https://223.5.5.5/dns-query
 
-  # 只能使用纯 IP 地址，可使用加密 DNS
-  default-nameserver: 
-    - tls://1.12.12.12:853
-    - tls://223.5.5.5:853
-    - https://223.5.5.5/dns-query 
-    - tcp://119.29.29.29
-    - tcp://223.6.6.6 
-    - system 
-    
+  proxy-server-nameserver:
+    - https://223.5.5.5/dns-query
+    - https://doh.pub/dns-query
+    - tls://223.5.5.5  
+ 
   nameserver-policy:
     "geosite:cn,private":
       - https://223.5.5.5/dns-query
@@ -115,49 +219,18 @@ dns:   # DNS泄露问题
       - https://doh.pub/dns-query
       - https://doh.360.cn/dns-query
       - tls://223.5.5.5
-      - tls://dot.pub         
-
-  proxy-server-nameserver:
-  #  - https://223.5.5.5/dns-query
-    - https://doh.pub/dns-query
-    - https://doh.360.cn/dns-query
-    - tls://223.5.5.5
-    - tls://dot.pub     
-    
-  fallback:
-    - quic://a.passcloud.xyz:784#🚀 节点选择 # quic是新兴的，比tls快一倍
-    - tls://8.8.4.4:853#🚀 节点选择
-    - tcp://1.1.1.1#🚀 节点选择
-    - https://1.1.1.1/dns-query#🚀 节点选择&h3=true
-    - https://1.0.0.1/dns-query#🚀 节点选择
-    - tls://1dot1dot1dot1.cloudflare-dns.com#🚀 节点选择 
-
-  fallback-filter:    # 国外网站使用此解析
-    geoip: true # 配置是否使用 geoip
-    geoip-code: CN
-    geosite:      # 根据实际情况决定
-      - cn
-      - games-cn
-      - apple-cn
-      - microsoft-cn 
-    ipcidr:
-      - 240.0.0.0/4
-    domain:
-      - '+.google.com'
-      - '+.facebook.com'
-      - '+.youtube.com'
-      - '+.googleapis.+'     
+      - tls://dot.pub      
 # DNS配置完成
 
 
 # 模式配置
 tun:    # tun模式
   enable: true
-  device: utun # gvisor/mixed
+  device: Ethernet 99 # gvisor/mixed
   mtu: 9000 # 最大传输单元
   stack: system # gvisor / lwip / system
   dns-hijack: # dns 劫持，将匹配到的连接导入内部 dns 模块，不书写协议则为 udp://
-    - udp://any:53  # 需要劫持的 DNS
+    - any:53  # 需要劫持的 DNS
     - tcp://any:53
   auto-route: true # 配置路由表
   auto-detect-interface: true  # 自动识别出口网卡
@@ -229,8 +302,8 @@ proxies:
   - {name: DNS_Hijack, type: dns}
 proxy-groups:
   - {name: 🚀 节点选择, type: select, proxies: [♻️ 主要延迟最低, ♻️ 备用延迟最低,🌎 全球直连], use: [主要订阅,备用订阅]}
-  - {name: ♻️ 主要延迟最低, type: url-test, url: https://www.google.com/generate_204, interval: 300, tolerance: 300, use: [主要订阅]}
-  - {name: ♻️ 备用延迟最低, type: url-test, url: https://www.google.com/generate_204, interval: 300, tolerance: 300, use: [备用订阅]}
+  - {name: ♻️ 主要延迟最低, type: url-test, url: http://cp.cloudflare.com, interval: 300, tolerance: 300, use: [主要订阅]}
+  - {name: ♻️ 备用延迟最低, type: url-test, url: http://cp.cloudflare.com, interval: 300, tolerance: 300, use: [备用订阅]}
   - {name: 🎮 游戏服务, type: select, proxies: [🚀 节点选择, ♻️ 主要延迟最低, ♻️ 备用延迟最低, 🌎 全球直连], use: [主要订阅,备用订阅]}
   - {name: 📲 电报信息, type: select, proxies: [🚀 节点选择, ♻️ 主要延迟最低, ♻️ 备用延迟最低, 🌎 全球直连], use: [主要订阅,备用订阅]}
   - {name: 🎬 油管媒体, type: select, proxies: [🚀 节点选择, ♻️ 主要延迟最低, ♻️ 备用延迟最低, 🌎 全球直连], use: [主要订阅,备用订阅]}
